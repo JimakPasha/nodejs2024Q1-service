@@ -4,6 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import * as uuid from 'uuid';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { ResponseUser } from 'src/common/interfaces/user.interface';
@@ -26,6 +27,10 @@ export class UserService {
 
   async findOne(id: string): Promise<ResponseUser> {
     const user = await this.dbService.users.findUnique(id);
+
+    if (!uuid.validate(id)) {
+      throw new BadRequestException('Invalid id. Please provide a valid UUID.');
+    }
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -58,6 +63,10 @@ export class UserService {
     const user = await this.dbService.users.findUnique(id);
     const { oldPassword, newPassword } = updatePasswordDto;
 
+    if (!uuid.validate(id)) {
+      throw new BadRequestException('Invalid id. Please provide a valid UUID.');
+    }
+
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -86,6 +95,10 @@ export class UserService {
   async remove(id: string): Promise<void> {
     const user = await this.dbService.users.findUnique(id);
     await this.dbService.users.delete(id);
+
+    if (!uuid.validate(id)) {
+      throw new BadRequestException('Invalid id. Please provide a valid UUID.');
+    }
 
     if (!user) {
       throw new NotFoundException('User not found');

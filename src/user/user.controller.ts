@@ -12,7 +12,6 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { ResponseUser } from 'src/common/interfaces/user.interface';
-import { Uuid } from 'src/common/dto/uuid.dto';
 
 @Controller('user')
 export class UserController {
