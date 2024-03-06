@@ -33,7 +33,7 @@ export class ArtistService {
 
   async create({ name, grammy }: ArtistDto): Promise<Artist> {
     if (!name || !grammy) {
-      throw new BadRequestException('Login and password are required');
+      throw new BadRequestException('Name and grammy are required');
     }
 
     const newArtist = await this.dbService.artists.create({
