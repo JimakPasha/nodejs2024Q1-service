@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Artist, NewArtist } from 'src/common/interfaces/artist.interface';
 import {
   NewUser,
   UpdatedUser,
@@ -9,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class DbService {
   private usersDb: User[] = [];
+  private artistsDb: Artist[] = [];
 
   get users() {
     return {
@@ -17,6 +19,16 @@ export class DbService {
       create: this.createUser,
       update: this.updateUser,
       delete: this.deleteUser,
+    };
+  }
+
+  get artists() {
+    return {
+      findUnique: this.findArtist,
+      findMany: this.findArtists,
+      create: this.createArtist,
+      update: this.updateArtist,
+      delete: this.deleteArtist,
     };
   }
 
@@ -76,5 +88,46 @@ export class DbService {
     if (!user) return;
 
     this.usersDb = this.usersDb.filter((user) => user.id !== id);
+  };
+
+  private findArtist = async (id: string): Promise<Artist | undefined> =>
+    this.artistsDb.find((artist) => artist.id === id);
+
+  private findArtists = async () => this.artistsDb;
+
+  private createArtist = async ({ name, grammy }: NewArtist) => {
+    const artist = {
+      id: uuidv4(),
+      name,
+      grammy,
+    };
+    this.artistsDb.push(artist);
+    return artist;
+  };
+
+  private updateArtist = async ({ id, name, grammy }: Artist) => {
+    const artist = this.artistsDb.find((artist) => artist.id === id);
+
+    if (!artist) return;
+
+    const updatedArtist = {
+      ...artist,
+      name,
+      grammy,
+    };
+
+    this.artistsDb = this.artistsDb.map((artist) =>
+      artist.id === id ? updatedArtist : artist,
+    );
+
+    return updatedArtist;
+  };
+
+  private deleteArtist = async (id: string) => {
+    const user = this.artistsDb.find((artist) => artist.id === id);
+
+    if (!user) return;
+
+    this.artistsDb = this.artistsDb.filter((artist) => artist.id !== id);
   };
 }
