@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Album, NewAlbum } from 'src/common/interfaces/album.interface';
 import { Artist, NewArtist } from 'src/common/interfaces/artist.interface';
 import {
   NewUser,
@@ -11,6 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 export class DbService {
   private usersDb: User[] = [];
   private artistsDb: Artist[] = [];
+  private albumsDb: Album[] = [];
 
   get users() {
     return {
@@ -29,6 +31,16 @@ export class DbService {
       create: this.createArtist,
       update: this.updateArtist,
       delete: this.deleteArtist,
+    };
+  }
+
+  get albums() {
+    return {
+      findUnique: this.findAlbum,
+      findMany: this.findAlbums,
+      create: this.createAlbum,
+      update: this.updateAlbum,
+      delete: this.deleteAlbum,
     };
   }
 
@@ -63,7 +75,7 @@ export class DbService {
     updatedAt,
     version,
   }: UpdatedUser) => {
-    const user = this.usersDb.find((user) => user.id === id);
+    const user = await this.users.findUnique(id);
 
     if (!user) return;
 
@@ -83,7 +95,7 @@ export class DbService {
   };
 
   private deleteUser = async (id: string) => {
-    const user = this.usersDb.find((user) => user.id === id);
+    const user = await this.users.findUnique(id);
 
     if (!user) return;
 
@@ -106,7 +118,7 @@ export class DbService {
   };
 
   private updateArtist = async ({ id, name, grammy }: Artist) => {
-    const artist = this.artistsDb.find((artist) => artist.id === id);
+    const artist = await this.artists.findUnique(id);
 
     if (!artist) return;
 
@@ -124,10 +136,56 @@ export class DbService {
   };
 
   private deleteArtist = async (id: string) => {
-    const user = this.artistsDb.find((artist) => artist.id === id);
+    const artist = await this.artists.findUnique(id);
 
-    if (!user) return;
+    if (!artist) return;
 
     this.artistsDb = this.artistsDb.filter((artist) => artist.id !== id);
+    this.albumsDb = this.albumsDb.map((album) =>
+      album.artistId === id ? { ...album, artistId: null } : album,
+    );
+  };
+
+  private findAlbum = async (id: string): Promise<Album | undefined> =>
+    this.albumsDb.find((album) => album.id === id);
+
+  private findAlbums = async () => this.albumsDb;
+
+  private createAlbum = async ({ name, year, artistId }: NewAlbum) => {
+    const album = {
+      id: uuidv4(),
+      name,
+      year,
+      artistId,
+    };
+    this.albumsDb.push(album);
+    return album;
+  };
+
+  private updateAlbum = async ({ id, name, year, artistId }: Album) => {
+    const album = await this.albums.findUnique(id);
+
+    if (!album) return;
+
+    const updatedAlbum = {
+      ...album,
+      name,
+      year,
+      artistId,
+    };
+
+    this.albumsDb = this.albumsDb.map((album) =>
+      album.id === id ? updatedAlbum : album,
+    );
+
+    return updatedAlbum;
+  };
+
+  private deleteAlbum = async (id: string) => {
+    const album = await this.albums.findUnique(id);
+
+    if (!album) return;
+
+    this.albumsDb = this.albumsDb.filter((album) => album.id !== id);
   };
 }
