@@ -93,15 +93,9 @@ export class UserService {
   }
 
   async remove(id: string): Promise<void> {
-    const user = await this.dbService.users.findUnique(id);
-    await this.dbService.users.delete(id);
-
-    if (!uuid.validate(id)) {
-      throw new BadRequestException('Invalid id. Please provide a valid UUID.');
-    }
-
-    if (!user) {
-      throw new NotFoundException('User not found');
+    const user = await this.findOne(id);
+    if (user) {
+      await this.dbService.users.delete(id);
     }
   }
 }
