@@ -33,7 +33,7 @@ export class AlbumService {
 
   async create({ name, year, artistId }: AlbumDto): Promise<Album> {
     if (!name || !year || !artistId) {
-      throw new BadRequestException('Name year and artistId are required');
+      throw new BadRequestException('Name, year and artistId are required');
     }
 
     const newAlbum = await this.dbService.albums.create({
