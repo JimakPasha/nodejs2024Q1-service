@@ -18,11 +18,11 @@ export class ArtistService {
   }
 
   async findOne(id: string) {
-    const artist = await this.dbService.artists.findUnique(id);
-
     if (!uuid.validate(id)) {
       throw new BadRequestException('Invalid id. Please provide a valid UUID.');
     }
+
+    const artist = await this.dbService.artists.findUnique(id);
 
     if (!artist) {
       throw new NotFoundException('Artist not found');

@@ -18,11 +18,11 @@ export class TrackService {
   }
 
   async findOne(id: string): Promise<Track> {
-    const track = await this.dbService.tracks.findUnique(id);
-
     if (!uuid.validate(id)) {
       throw new BadRequestException('Invalid id. Please provide a valid UUID.');
     }
+
+    const track = await this.dbService.tracks.findUnique(id);
 
     if (!track) {
       throw new NotFoundException('Track not found');

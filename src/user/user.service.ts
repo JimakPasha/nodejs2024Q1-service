@@ -26,11 +26,11 @@ export class UserService {
   }
 
   async findOne(id: string): Promise<ResponseUser> {
-    const user = await this.dbService.users.findUnique(id);
-
     if (!uuid.validate(id)) {
       throw new BadRequestException('Invalid id. Please provide a valid UUID.');
     }
+
+    const user = await this.dbService.users.findUnique(id);
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -62,10 +62,6 @@ export class UserService {
   ): Promise<ResponseUser> {
     const user = await this.dbService.users.findUnique(id);
     const { oldPassword, newPassword } = updatePasswordDto;
-
-    if (!uuid.validate(id)) {
-      throw new BadRequestException('Invalid id. Please provide a valid UUID.');
-    }
 
     if (!user) {
       throw new NotFoundException('User not found');

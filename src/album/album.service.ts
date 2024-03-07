@@ -18,11 +18,11 @@ export class AlbumService {
   }
 
   async findOne(id: string): Promise<Album> {
-    const album = await this.dbService.albums.findUnique(id);
-
     if (!uuid.validate(id)) {
       throw new BadRequestException('Invalid id. Please provide a valid UUID.');
     }
+
+    const album = await this.dbService.albums.findUnique(id);
 
     if (!album) {
       throw new NotFoundException('Album not found');
