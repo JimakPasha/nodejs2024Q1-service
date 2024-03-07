@@ -6,7 +6,7 @@ import {
 import * as uuid from 'uuid';
 import { ArtistDto } from './dto/artist.dto';
 import { DbService } from 'src/db/db.service';
-import { Artist } from './entities/artist.entity';
+import { Artist } from 'src/common/interfaces/artist.interface';
 
 @Injectable()
 export class ArtistService {

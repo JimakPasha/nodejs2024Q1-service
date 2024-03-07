@@ -9,8 +9,8 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
-import { Artist } from './entities/artist.entity';
 import { ArtistDto } from './dto/artist.dto';
+import { Artist } from 'src/common/interfaces/artist.interface';
 
 @Controller('artist')
 export class ArtistController {
