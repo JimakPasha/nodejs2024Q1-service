@@ -291,7 +291,9 @@ export class DbService {
   };
 
   private findFavArtists = async () => {
-    return this.favArtistsDb.map((id) => this.artists.findUnique(id));
+    return this.favArtistsDb.map(
+      async (id) => await this.artists.findUnique(id),
+    );
   };
 
   private saveFavArtist = async (id: string) => {
@@ -310,7 +312,7 @@ export class DbService {
   };
 
   private findFavAlbums = async () => {
-    return this.favAlbumsDb.map((id) => this.albums.findUnique(id));
+    return this.favAlbumsDb.map(async (id) => await this.albums.findUnique(id));
   };
 
   private saveFavAlbum = async (id: string) => {
@@ -330,7 +332,7 @@ export class DbService {
   };
 
   private findFavTracks = async () => {
-    return this.favTracksDb.map((id) => this.tracks.findUnique(id));
+    return this.favTracksDb.map(async (id) => await this.tracks.findUnique(id));
   };
 
   private saveFavTrack = async (id: string) => {

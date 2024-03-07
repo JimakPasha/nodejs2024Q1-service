@@ -5,7 +5,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import * as uuid from 'uuid';
-import { Fav } from 'src/common/interfaces/fav.interface';
 import { DbService } from 'src/db/db.service';
 
 @Injectable()
