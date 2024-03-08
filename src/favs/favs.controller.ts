@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Param, Delete, HttpCode } from '@nestjs/common';
 import { FavsService } from './favs.service';
 
 @Controller('favs')
@@ -17,6 +17,7 @@ export class FavsController {
   }
 
   @Delete('/artist/:id')
+  @HttpCode(204)
   removeFavArtist(@Param('id') id: string) {
     return this.favsService.removeFavArtist(id);
   }
@@ -27,6 +28,7 @@ export class FavsController {
   }
 
   @Delete('/album/:id')
+  @HttpCode(204)
   removeFavAlbum(@Param('id') id: string) {
     return this.favsService.removeFavAlbum(id);
   }
@@ -37,6 +39,7 @@ export class FavsController {
   }
 
   @Delete('/track/:id')
+  @HttpCode(204)
   removeFavTrack(@Param('id') id: string) {
     return this.favsService.removeFavTrack(id);
   }

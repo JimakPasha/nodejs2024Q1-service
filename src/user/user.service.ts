@@ -31,19 +31,16 @@ export class UserService {
     }
 
     const user = await this.dbService.users.findUnique(id);
-
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    return user;
+    const { id: idUser, login, createdAt, updatedAt, version } = user;
+
+    return { id: idUser, login, createdAt, updatedAt, version };
   }
 
   async create(createUserDto: CreateUserDto): Promise<ResponseUser> {
-    if (!createUserDto.login || !createUserDto.password) {
-      throw new BadRequestException('Login and password are required');
-    }
-
     const { id, login, createdAt, updatedAt, version } =
       await this.dbService.users.create({
         login: createUserDto.login,
@@ -60,6 +57,10 @@ export class UserService {
     id: string,
     updatePasswordDto: UpdatePasswordDto,
   ): Promise<ResponseUser> {
+    if (!uuid.validate(id)) {
+      throw new BadRequestException('Invalid id. Please provide a valid UUID.');
+    }
+
     const user = await this.dbService.users.findUnique(id);
     const { oldPassword, newPassword } = updatePasswordDto;
 

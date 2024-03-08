@@ -32,10 +32,6 @@ export class AlbumService {
   }
 
   async create({ name, year, artistId }: AlbumDto): Promise<Album> {
-    if (!name || !year || !artistId) {
-      throw new BadRequestException('Name, year and artistId are required');
-    }
-
     const newAlbum = await this.dbService.albums.create({
       name,
       year,
@@ -56,9 +52,7 @@ export class AlbumService {
   }
 
   async remove(id: string): Promise<void> {
-    const album = await this.findOne(id);
-    if (album) {
-      await this.dbService.albums.delete(id);
-    }
+    await this.findOne(id);
+    await this.dbService.albums.delete(id);
   }
 }

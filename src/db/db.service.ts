@@ -186,6 +186,9 @@ export class DbService {
     this.tracksDb = this.tracksDb.map((track) =>
       track.artistId === id ? { ...track, artistId: null } : track,
     );
+    this.favArtistsDb = this.favArtistsDb.filter(
+      (fafArtistId) => fafArtistId !== id,
+    );
   };
 
   private findAlbum = async (id: string) =>
@@ -231,6 +234,9 @@ export class DbService {
     this.albumsDb = this.albumsDb.filter((album) => album.id !== id);
     this.tracksDb = this.tracksDb.map((track) =>
       track.albumId === id ? { ...track, albumId: null } : track,
+    );
+    this.favAlbumsDb = this.favAlbumsDb.filter(
+      (fafAlbumId) => fafAlbumId !== id,
     );
   };
 
@@ -288,12 +294,17 @@ export class DbService {
     if (!track) return;
 
     this.tracksDb = this.tracksDb.filter((track) => track.id !== id);
+    this.favTracksDb = this.favTracksDb.filter(
+      (fafTrackId) => fafTrackId !== id,
+    );
   };
 
   private findFavArtists = async () => {
-    return this.favArtistsDb.map((id) =>
-      this.artistsDb.find((artist) => artist.id === id),
-    );
+    return this.favArtistsDb.reduce((favArtists, id) => {
+      const artist = this.artistsDb.find((artistEl) => artistEl.id === id);
+      if (artist) favArtists.push(artist);
+      return favArtists;
+    }, []);
   };
 
   private saveFavArtist = async (id: string) => {
@@ -312,9 +323,11 @@ export class DbService {
   };
 
   private findFavAlbums = async () => {
-    return this.favAlbumsDb.map((id) =>
-      this.albumsDb.find((album) => album.id === id),
-    );
+    return this.favAlbumsDb.reduce((favAlbums, id) => {
+      const album = this.albumsDb.find((albumEl) => albumEl.id === id);
+      if (album) favAlbums.push(album);
+      return favAlbums;
+    }, []);
   };
 
   private saveFavAlbum = async (id: string) => {
@@ -334,9 +347,11 @@ export class DbService {
   };
 
   private findFavTracks = async () => {
-    return this.favTracksDb.map((id) =>
-      this.tracksDb.find((track) => track.id === id),
-    );
+    return this.favTracksDb.reduce((favTracks, id) => {
+      const track = this.tracksDb.find((trackEl) => trackEl.id === id);
+      if (track) favTracks.push(track);
+      return favTracks;
+    }, []);
   };
 
   private saveFavTrack = async (id: string) => {

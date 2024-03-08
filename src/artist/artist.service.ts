@@ -32,10 +32,6 @@ export class ArtistService {
   }
 
   async create({ name, grammy }: ArtistDto): Promise<Artist> {
-    if (!name || !grammy) {
-      throw new BadRequestException('Name and grammy are required');
-    }
-
     const newArtist = await this.dbService.artists.create({
       name,
       grammy,
@@ -46,6 +42,7 @@ export class ArtistService {
 
   async update(id: string, updateArtistDto: ArtistDto): Promise<Artist> {
     const artist = await this.findOne(id);
+
     const updatedArtist = await this.dbService.artists.update({
       ...artist,
       ...updateArtistDto,
@@ -55,9 +52,7 @@ export class ArtistService {
   }
 
   async remove(id: string): Promise<void> {
-    const artist = await this.findOne(id);
-    if (artist) {
-      await this.dbService.artists.delete(id);
-    }
+    await this.findOne(id);
+    await this.dbService.artists.delete(id);
   }
 }

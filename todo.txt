@@ -1,0 +1,8 @@
+- .env
+- OpenAPI
+- readme
+- lint
+- refactor (errors)
+- tests after refactor
+- manual test
+- pr

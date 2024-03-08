@@ -37,12 +37,6 @@ export class TrackService {
     albumId,
     artistId,
   }: TrackDto): Promise<Track> {
-    if (!name || !duration || !albumId || !artistId) {
-      throw new BadRequestException(
-        'Name, duration, artistId and albumId are required',
-      );
-    }
-
     const newTrack = await this.dbService.tracks.create({
       name,
       duration,
@@ -64,9 +58,7 @@ export class TrackService {
   }
 
   async remove(id: string): Promise<void> {
-    const track = await this.findOne(id);
-    if (track) {
-      await this.dbService.tracks.delete(id);
-    }
+    await this.findOne(id);
+    await this.dbService.tracks.delete(id);
   }
 }
