@@ -1,8 +1,8 @@
 - .env
 - OpenAPI
 - readme
-- lint
 - refactor (errors)
+- lint after refactor
 - tests after refactor
 - manual test
 - pr
