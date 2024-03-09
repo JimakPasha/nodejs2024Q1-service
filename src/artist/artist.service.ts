@@ -1,12 +1,9 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import * as uuid from 'uuid';
+import { Injectable } from '@nestjs/common';
 import { ArtistDto } from './dto/artist.dto';
 import { DbService } from 'src/db/db.service';
 import { Artist } from 'src/common/interfaces/artist.interface';
+import { checkUuidError } from 'src/common/errors/checkUuidError';
+import { checkNotFoundError } from 'src/common/errors/checkNotFoundError';
 
 @Injectable()
 export class ArtistService {
@@ -18,15 +15,11 @@ export class ArtistService {
   }
 
   async findOne(id: string) {
-    if (!uuid.validate(id)) {
-      throw new BadRequestException('Invalid id. Please provide a valid UUID.');
-    }
+    checkUuidError(id);
 
     const artist = await this.dbService.artists.findUnique(id);
 
-    if (!artist) {
-      throw new NotFoundException('Artist not found');
-    }
+    checkNotFoundError({ entityName: 'Artist', entity: artist });
 
     return artist;
   }

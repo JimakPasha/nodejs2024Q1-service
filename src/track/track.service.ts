@@ -1,12 +1,9 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import * as uuid from 'uuid';
+import { Injectable } from '@nestjs/common';
 import { Track } from 'src/common/interfaces/track.interface';
 import { DbService } from 'src/db/db.service';
 import { TrackDto } from './dto/track.dto';
+import { checkUuidError } from 'src/common/errors/checkUuidError';
+import { checkNotFoundError } from 'src/common/errors/checkNotFoundError';
 
 @Injectable()
 export class TrackService {
@@ -18,15 +15,11 @@ export class TrackService {
   }
 
   async findOne(id: string): Promise<Track> {
-    if (!uuid.validate(id)) {
-      throw new BadRequestException('Invalid id. Please provide a valid UUID.');
-    }
+    checkUuidError(id);
 
     const track = await this.dbService.tracks.findUnique(id);
 
-    if (!track) {
-      throw new NotFoundException('Track not found');
-    }
+    checkNotFoundError({ entityName: 'Track', entity: track });
 
     return track;
   }

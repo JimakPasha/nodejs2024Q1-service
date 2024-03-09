@@ -1,14 +1,11 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import * as uuid from 'uuid';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { ResponseUser } from 'src/common/interfaces/user.interface';
 import { DbService } from 'src/db/db.service';
+import { checkUuidError } from 'src/common/errors/checkUuidError';
+import { checkNotFoundError } from 'src/common/errors/checkNotFoundError';
+import { checkChangePassword } from 'src/common/errors/checkChangePassword';
 
 @Injectable()
 export class UserService {
@@ -26,14 +23,11 @@ export class UserService {
   }
 
   async findOne(id: string): Promise<ResponseUser> {
-    if (!uuid.validate(id)) {
-      throw new BadRequestException('Invalid id. Please provide a valid UUID.');
-    }
+    checkUuidError(id);
 
     const user = await this.dbService.users.findUnique(id);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+
+    checkNotFoundError({ entityName: 'User', entity: user });
 
     const { id: idUser, login, createdAt, updatedAt, version } = user;
 
@@ -57,20 +51,14 @@ export class UserService {
     id: string,
     updatePasswordDto: UpdatePasswordDto,
   ): Promise<ResponseUser> {
-    if (!uuid.validate(id)) {
-      throw new BadRequestException('Invalid id. Please provide a valid UUID.');
-    }
+    checkUuidError(id);
 
     const user = await this.dbService.users.findUnique(id);
     const { oldPassword, newPassword } = updatePasswordDto;
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+    checkNotFoundError({ entityName: 'User', entity: user });
 
-    if (user.password !== oldPassword) {
-      throw new ForbiddenException('Old password is wrong');
-    }
+    checkChangePassword({ currentPassword: user.password, oldPassword });
 
     const updatedUser = await this.dbService.users.update({
       id,

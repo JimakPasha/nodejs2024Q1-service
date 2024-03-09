@@ -1,6 +1,5 @@
 - OpenAPI
 - readme
-- refactor (errors)
 - lint after refactor
 - tests after refactor
 - manual test

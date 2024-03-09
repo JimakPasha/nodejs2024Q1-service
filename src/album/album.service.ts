@@ -1,12 +1,9 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import * as uuid from 'uuid';
+import { Injectable } from '@nestjs/common';
 import { Album } from 'src/common/interfaces/album.interface';
 import { DbService } from 'src/db/db.service';
 import { AlbumDto } from './dto/album.dto';
+import { checkUuidError } from 'src/common/errors/checkUuidError';
+import { checkNotFoundError } from 'src/common/errors/checkNotFoundError';
 
 @Injectable()
 export class AlbumService {
@@ -18,15 +15,11 @@ export class AlbumService {
   }
 
   async findOne(id: string): Promise<Album> {
-    if (!uuid.validate(id)) {
-      throw new BadRequestException('Invalid id. Please provide a valid UUID.');
-    }
+    checkUuidError(id);
 
     const album = await this.dbService.albums.findUnique(id);
 
-    if (!album) {
-      throw new NotFoundException('Album not found');
-    }
+    checkNotFoundError({ entityName: 'Album', entity: album });
 
     return album;
   }
