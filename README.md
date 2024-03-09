@@ -8,7 +8,13 @@
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/JimakPasha/nodejs2024Q1-service
+```
+
+## Go to branch this task
+
+```
+git checkout feature/part-1/crud
 ```
 
 ## Installing NPM modules
@@ -17,10 +23,16 @@ git clone {repository URL}
 npm install
 ```
 
+## Add .env file with PORT=**** or change .env.example on .env
+
 ## Running application
 
 ```
 npm start
+```
+or
+```
+npm start:dev
 ```
 
 After starting the app on port (4000 as default) you can open
@@ -31,7 +43,7 @@ For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
 After application running open new terminal and enter:
 
-To run all tests without authorization
+To run all tests without authorization (you can change in package.json "jest --testPathIgnorePatterns refresh.e2e.spec.ts --noStackTrace --runInBand" on "jest --testPathIgnorePatterns refresh.e2e.spec.ts auth --noStackTrace --runInBand" for run test without authorization)
 
 ```
 npm run test

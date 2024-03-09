@@ -1,0 +1,338 @@
+openapi: 3.0.0
+paths:
+  /user:
+    get:
+      operationId: UserController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+    post:
+      operationId: UserController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDto'
+      responses:
+        '201':
+          description: ''
+  '/user/{id}':
+    get:
+      operationId: UserController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+    put:
+      operationId: UserController_updateUserPassword
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePasswordDto'
+      responses:
+        '200':
+          description: ''
+    delete:
+      operationId: UserController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '204':
+          description: ''
+  /artist:
+    get:
+      operationId: ArtistController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+    post:
+      operationId: ArtistController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArtistDto'
+      responses:
+        '201':
+          description: ''
+  '/artist/{id}':
+    get:
+      operationId: ArtistController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+    put:
+      operationId: ArtistController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArtistDto'
+      responses:
+        '200':
+          description: ''
+    delete:
+      operationId: ArtistController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '204':
+          description: ''
+  /album:
+    get:
+      operationId: AlbumController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+    post:
+      operationId: AlbumController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlbumDto'
+      responses:
+        '201':
+          description: ''
+  '/album/{id}':
+    get:
+      operationId: AlbumController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+    put:
+      operationId: AlbumController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlbumDto'
+      responses:
+        '200':
+          description: ''
+    delete:
+      operationId: AlbumController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '204':
+          description: ''
+  /track:
+    get:
+      operationId: TrackController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+    post:
+      operationId: TrackController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrackDto'
+      responses:
+        '201':
+          description: ''
+  '/track/{id}':
+    get:
+      operationId: TrackController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+    put:
+      operationId: TrackController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrackDto'
+      responses:
+        '200':
+          description: ''
+    delete:
+      operationId: TrackController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '204':
+          description: ''
+  /favs:
+    get:
+      operationId: FavsController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+  '/favs/artist/{id}':
+    post:
+      operationId: FavsController_saveFavArtist
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '201':
+          description: ''
+    delete:
+      operationId: FavsController_removeFavArtist
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '204':
+          description: ''
+  '/favs/album/{id}':
+    post:
+      operationId: FavsController_saveFavAlbum
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '201':
+          description: ''
+    delete:
+      operationId: FavsController_removeFavAlbum
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '204':
+          description: ''
+  '/favs/track/{id}':
+    post:
+      operationId: FavsController_saveFavTrack
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '201':
+          description: ''
+    delete:
+      operationId: FavsController_removeFavTrack
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '204':
+          description: ''
+info:
+  title: ''
+  description: ''
+  version: 1.0.0
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas:
+    CreateUserDto:
+      type: object
+      properties: {}
+    UpdatePasswordDto:
+      type: object
+      properties: {}
+    ArtistDto:
+      type: object
+      properties: {}
+    AlbumDto:
+      type: object
+      properties: {}
+    TrackDto:
+      type: object
+      properties: {}
