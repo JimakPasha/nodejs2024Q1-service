@@ -5,6 +5,12 @@ services:
     build: .
     volumes:
       - ./src:/app/src
+    restart: always
     ports:
       - ${PORT}:${PORT}
-    restart: always
+    networks:
+      - home-library-service-network
+
+networks:
+  home-library-service-network:
+  driver: bridge
