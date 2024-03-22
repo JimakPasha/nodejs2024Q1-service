@@ -1,36 +1,16 @@
-version: '3.1'
-
+version: '3.8'
 services:
-  db:
-    build: ./prisma/
-    container_name: 'hls-data-base'
+
+  postgres:
+    image: postgres:15
     restart: always
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-    ports:
-      - ${DB_PORT}:${DB_PORT}
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
     volumes:
-      - db_data:/var/lib/postgresql/data
-    networks:
-      - home-library-service-network
-
-  app:
-    build: .
-    container_name: 'hls-app'
-    volumes:
-      - ./src:/app/src
-    restart: always
+      - postgres:/var/lib/postgresql/data
     ports:
-      - ${PORT}:${PORT}
-    networks:
-      - home-library-service-network
-
-networks:
-  home-library-service-network:
-    driver: bridge
+      - '5432:5432'
 
 volumes:
-  db_data:
-    driver: local
+  postgres:
