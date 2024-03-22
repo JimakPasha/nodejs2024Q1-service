@@ -1,9 +1,9 @@
 import { NotFoundException } from '@nestjs/common';
 import { errorMessages } from '../constants/errorMessages';
-import { User } from '../interfaces/user.interface';
 import { Album } from '../interfaces/album.interface';
 import { Artist } from '../interfaces/artist.interface';
 import { Track } from '../interfaces/track.interface';
+import { User } from '@prisma/client';
 
 interface CheckNotFoundErrorProps {
   entityName: string;
