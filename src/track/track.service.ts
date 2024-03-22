@@ -1,57 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import { Track } from 'src/common/interfaces/track.interface';
-import { DbService } from 'src/db/db.service';
 import { TrackDto } from './dto/track.dto';
 import { checkUuidError } from 'src/common/errors/checkUuidError';
 import { checkNotFoundError } from 'src/common/errors/checkNotFoundError';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class TrackService {
-  constructor(private dbService: DbService) {}
+  constructor(private dbService: PrismaService) {}
 
-  async findAll(): Promise<Track[]> {
-    const tracks = await this.dbService.tracks.findMany();
-    return tracks;
+  async findAll() {
+    return await this.dbService.track.findMany();
   }
 
-  async findOne(id: string): Promise<Track> {
+  async findOne(id: string) {
     checkUuidError(id);
 
-    const track = await this.dbService.tracks.findUnique(id);
+    const track = await this.dbService.track.findUnique({ where: { id } });
 
     checkNotFoundError({ entityName: 'Track', entity: track });
 
     return track;
   }
 
-  async create({
-    name,
-    duration,
-    albumId,
-    artistId,
-  }: TrackDto): Promise<Track> {
-    const newTrack = await this.dbService.tracks.create({
-      name,
-      duration,
-      albumId,
-      artistId,
-    });
-
-    return newTrack;
+  async create(trackDto: TrackDto) {
+    return await this.dbService.track.create({ data: trackDto });
   }
 
-  async update(id: string, updateTrackDto: TrackDto): Promise<Track> {
-    const track = await this.findOne(id);
-    const updatedTrack = await this.dbService.tracks.update({
-      ...track,
-      ...updateTrackDto,
-    });
-
-    return updatedTrack;
-  }
-
-  async remove(id: string): Promise<void> {
+  async update(id: string, updateTrackDto: TrackDto) {
+    //TODO:
     await this.findOne(id);
-    await this.dbService.tracks.delete(id);
+    return await this.dbService.track.update({
+      where: { id },
+      data: updateTrackDto,
+    });
+  }
+
+  async remove(id: string) {
+    //TODO:
+    await this.findOne(id);
+    await this.dbService.track.delete({ where: { id } });
   }
 }

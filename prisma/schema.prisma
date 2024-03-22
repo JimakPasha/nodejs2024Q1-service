@@ -16,53 +16,36 @@ model User {
   updatedAt DateTime @default(now()) @updatedAt
 }
 
-model Artist {
-  id         String      @id @default(uuid())
-  name       String
-  grammy     Boolean
-  albums     Album[]
-  tracks     Track[]
-  favArtists FavArtist[]
+model Track {
+  id       String  @id @default(uuid())
+  name     String
+  duration Int
+  artist   Artist? @relation(fields: [artistId], references: [id], onDelete: SetNull)
+  album    Album?  @relation(fields: [albumId], references: [id], onDelete: SetNull)
+  artistId String?
+  albumId  String?
 }
 
 model Album {
-  id        String     @id @default(uuid())
-  name      String
-  year      Int
-  artistId  String?
-  artist    Artist?    @relation(fields: [artistId], references: [id], onDelete: SetNull)
-  tracks    Track[]
-  favAlbums FavAlbum[]
+  id       String  @id @default(uuid())
+  year     Int
+  name     String
+  tracks   Track[]
+  artistId String?
+  artist   Artist? @relation(fields: [artistId], references: [id], onDelete: SetNull)
 }
 
-model Track {
-  id        String     @id @default(uuid())
-  name      String
-  duration  Int
-  artistId  String?
-  albumId   String?
-  artist    Artist?    @relation(fields: [artistId], references: [id], onDelete: SetNull)
-  album     Album?     @relation(fields: [albumId], references: [id], onDelete: SetNull)
-  favTracks FavTrack[]
+model Artist {
+  id     String  @id @default(uuid())
+  grammy Boolean @default(false)
+  name   String
+  albums Album[]
+  tracks Track[]
 }
 
-model FavArtist {
-  artistId String
-  artist   Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
-
-  @@id([artistId])
-}
-
-model FavAlbum {
-  albumId String
-  album   Album  @relation(fields: [albumId], references: [id], onDelete: Cascade)
-
-  @@id([albumId])
-}
-
-model FavTrack {
-  trackId String
-  track   Track  @relation(fields: [trackId], references: [id], onDelete: Cascade)
-
-  @@id([trackId])
+model Favorite {
+  favoriteId String   @id @default(uuid())
+  artists    String[]
+  albums     String[]
+  tracks     String[]
 }

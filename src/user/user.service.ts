@@ -34,6 +34,7 @@ export class UserService {
   async updateUserPassword(id: string, updatePasswordDto: UpdatePasswordDto) {
     checkUuidError(id);
 
+    // TODO:
     const user = await this.dbService.user.findUnique({ where: { id } });
     const { oldPassword, newPassword } = updatePasswordDto;
 

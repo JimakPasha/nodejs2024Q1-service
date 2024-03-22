@@ -9,7 +9,6 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { AlbumService } from './album.service';
-import { Album } from 'src/common/interfaces/album.interface';
 import { AlbumDto } from './dto/album.dto';
 
 @Controller('album')
@@ -17,31 +16,28 @@ export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 
   @Get()
-  async findAll(): Promise<Album[]> {
+  async findAll() {
     return await this.albumService.findAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Album> {
+  async findOne(@Param('id') id: string) {
     return await this.albumService.findOne(id);
   }
 
   @Post()
-  async create(@Body() createAlbumDto: AlbumDto): Promise<Album> {
+  async create(@Body() createAlbumDto: AlbumDto) {
     return await this.albumService.create(createAlbumDto);
   }
 
   @Put(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateAlbumDto: AlbumDto,
-  ): Promise<Album> {
+  async update(@Param('id') id: string, @Body() updateAlbumDto: AlbumDto) {
     return await this.albumService.update(id, updateAlbumDto);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  async remove(@Param('id') id: string): Promise<void> {
+  async remove(@Param('id') id: string) {
     return await this.albumService.remove(id);
   }
 }

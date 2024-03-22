@@ -1,51 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import { Album } from 'src/common/interfaces/album.interface';
-import { DbService } from 'src/db/db.service';
 import { AlbumDto } from './dto/album.dto';
 import { checkUuidError } from 'src/common/errors/checkUuidError';
 import { checkNotFoundError } from 'src/common/errors/checkNotFoundError';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class AlbumService {
-  constructor(private dbService: DbService) {}
+  constructor(private dbService: PrismaService) {}
 
-  async findAll(): Promise<Album[]> {
-    const albums = await this.dbService.albums.findMany();
-    return albums;
+  async findAll() {
+    return await this.dbService.album.findMany();
   }
 
-  async findOne(id: string): Promise<Album> {
+  async findOne(id: string) {
     checkUuidError(id);
 
-    const album = await this.dbService.albums.findUnique(id);
+    const album = await this.dbService.album.findUnique({ where: { id } });
 
     checkNotFoundError({ entityName: 'Album', entity: album });
 
     return album;
   }
 
-  async create({ name, year, artistId }: AlbumDto): Promise<Album> {
-    const newAlbum = await this.dbService.albums.create({
-      name,
-      year,
-      artistId,
-    });
-
-    return newAlbum;
+  async create(albumDto: AlbumDto) {
+    return await this.dbService.album.create({ data: albumDto });
   }
 
-  async update(id: string, updateAlbumDto: AlbumDto): Promise<Album> {
-    const album = await this.findOne(id);
-    const updatedAlbum = await this.dbService.albums.update({
-      ...album,
-      ...updateAlbumDto,
-    });
-
-    return updatedAlbum;
-  }
-
-  async remove(id: string): Promise<void> {
+  async update(id: string, albumDto: AlbumDto) {
+    // TODO:
     await this.findOne(id);
-    await this.dbService.albums.delete(id);
+    return await this.dbService.album.update({
+      where: { id },
+      data: albumDto,
+    });
+  }
+
+  async remove(id: string) {
+    //TODO:
+    await this.findOne(id);
+    await this.dbService.album.delete({ where: { id } });
   }
 }
