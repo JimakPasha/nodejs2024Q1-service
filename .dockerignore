@@ -1,3 +1,8 @@
-node_modules
+/node_modules
+/dist
+/db
+/.git
 .env
-dist
+.env.example
+.gitignore
+README.md
