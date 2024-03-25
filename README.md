@@ -34,6 +34,10 @@ docker-compose:up
 ## Run app (no in docker)
 
 ```
+npm start
+```
+or
+```
 npm run start:dev
 ```
 
