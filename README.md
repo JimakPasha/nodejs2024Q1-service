@@ -8,7 +8,13 @@
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/JimakPasha/nodejs2024Q1-service
+```
+
+## Go to branch this task
+
+```
+git checkout feature/part-2/db-containerization
 ```
 
 ## Installing NPM modules
@@ -17,21 +23,32 @@ git clone {repository URL}
 npm install
 ```
 
-## Running application
+## Add change .env.example on .env
+
+## Create and running docker container container
+
+```
+docker-compose:up
+```
+
+## Run app (no in docker)
 
 ```
 npm start
 ```
+or
+```
+npm run start:dev
+```
 
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
+After starting docker containers you can open in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
 ## Testing
 
 After application running open new terminal and enter:
 
-To run all tests without authorization
+To run all tests without authorization (you can change in package.json "jest --testPathIgnorePatterns refresh.e2e.spec.ts --noStackTrace --runInBand" on "jest --testPathIgnorePatterns refresh.e2e.spec.ts auth --noStackTrace --runInBand" for run test without authorization)
 
 ```
 npm run test
@@ -54,6 +71,17 @@ To run only specific test suite with authorization
 ```
 npm run test:auth -- <path to suite>
 ```
+
+## Scan Docker containers
+
+```
+npm run docker:scan
+```
+
+## Check docker images in Docker Hub. Images:
+
+jimakpasha/home-library-service-app
+jimakpasha/home-library-service-db
 
 ### Auto-fix and format
 
