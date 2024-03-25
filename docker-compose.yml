@@ -2,7 +2,9 @@ version: '3.8'
 services:
 
   postgres:
-    image: postgres:15
+    build:
+      context: ./db
+      dockerfile: Dockerfile
     restart: always
     environment:
       - POSTGRES_USER=myuser
@@ -10,7 +12,7 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
-      - '5432:5432'
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
 
 volumes:
   postgres:

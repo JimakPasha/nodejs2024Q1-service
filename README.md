@@ -14,7 +14,7 @@ git clone https://github.com/JimakPasha/nodejs2024Q1-service
 ## Go to branch this task
 
 ```
-git checkout feature/part-1/crud
+git checkout feature/part-2/db-containerization
 ```
 
 ## Installing NPM modules
@@ -23,20 +23,21 @@ git checkout feature/part-1/crud
 npm install
 ```
 
-## Add .env file with PORT=**** or change .env.example on .env
+## Add change .env.example on .env
 
-## Running application
+## Create and running docker container container
 
 ```
-npm start
-```
-or
-```
-npm start:dev
+docker-compose:up
 ```
 
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
+## Run app (no in docker)
+
+```
+npm run start:dev
+```
+
+After starting docker containers you can open in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
 ## Testing
@@ -66,6 +67,17 @@ To run only specific test suite with authorization
 ```
 npm run test:auth -- <path to suite>
 ```
+
+## Scan Docker containers
+
+```
+npm run docker:scan
+```
+
+## Check docker images in Docker Hub. Images:
+
+jimakpasha/home-library-service-app
+jimakpasha/home-library-service-db
 
 ### Auto-fix and format
 
